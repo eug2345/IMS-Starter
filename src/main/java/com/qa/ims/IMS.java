@@ -7,6 +7,7 @@ import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
@@ -20,12 +21,12 @@ public class IMS {
 
 	public IMS() {
 		this.utils = new Utils();
-		final CustomerDAO custDAO = new CustomerDAO();
+		final Customer custDAO = new Customer(0, null, null);
 		this.customers = new CustomerController(custDAO, utils);
 	}
 
 	public void imsSystem() {
-		LOGGER.info("Welcome to the Inventory Management System!");
+		LOGGER.info("Welcome to the Inventory Management System!"); 
 		DBUtils.connect();
 
 		Domain domain = null;
@@ -83,13 +84,15 @@ public class IMS {
 		case UPDATE:
 			crudController.update();
 			break;
-		case DELETE:
-			crudController.delete();
-			break;
-		case RETURN:
-			break;
-		default:
-			break;
+        case DELETE:
+            crudController.delete();
+            break;
+        case RETURN:
+            break;
+        default:
+            break;
+        
+    
 		}
 	}
 

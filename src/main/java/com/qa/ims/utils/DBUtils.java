@@ -23,7 +23,7 @@ public class DBUtils {
 
 	private final String dbPassword;
 
-	private DBUtils(String properties) {
+	DBUtils(String properties) {
 		Properties dbProps = new Properties();
 		try (InputStream fis = ClassLoader.getSystemResourceAsStream(properties)) {
 			dbProps.load(fis);
