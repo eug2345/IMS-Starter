@@ -2,7 +2,7 @@ package com.qa.ims.controller;
 
 import java.util.List;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 import com.qa.ims.persistence.domain.Item;
 
 /**
@@ -11,12 +11,53 @@ import com.qa.ims.persistence.domain.Item;
  */
 public interface CrudController<T> {
 
-	<item> List<Customer> readAll();
 
-	Customer create();
+		List<T> readAll();
 
-	Item update();
+		Item create();
 
-	int delete();
+		Item update();
 
-}
+		int delete();
+
+		/**
+		 * Creates a customer by taking in user input
+		 * @param itemPrice 
+		 */
+		Item create(Object itemPrice);
+
+		/**
+		 * Creates a customer by taking in user input
+		 * @param itemPrice 
+		 * @param itemName 
+		 * @param itemID 
+		 */
+		Item create(Object itemPrice, Class<Double> itemName, String itemID);
+
+		/**
+		 * Updates an existing customer by taking in user input
+		 * @param itemPrice 
+		 */
+		Item update(Class<Double> itemPrice);
+
+		/**
+		 * Deletes an existing customer by the id of the customer
+		 * 
+		 * @return
+		 */
+		int delete(long id);
+
+		/**
+		 * Deletes an existing customer by the id of the customer
+		 * 
+		 * @return
+		 */
+		int delete(Double id);
+
+		/**
+		 * Reads all customers to the logger
+		 * @param orders 
+		 */
+		List<Order> readAll(List<Order> orders);
+
+	}

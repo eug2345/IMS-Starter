@@ -1,27 +1,28 @@
 package com.qa.ims.persistence.domain;
 
-public class Customer {
-
-	private Long id;
+public class Customer1 {
+//field
+	private Double id;
 	private String firstName;
 	private String surname;
-
-	public Customer(long id, String firstName, String surname) {
+//constructor
+	public Customer1(long id, String firstName, String surname) {
 		this.setFirstName(firstName);
 		this.setSurname(surname);
 	}
 
-	public Customer(Long id, String firstName, String surname) {
+	public Customer1(String firstName, String surname) {
 		this.setId(id);
 		this.setFirstName(firstName);
 		this.setSurname(surname);
 	}
-
-	public Long getId() {
-		return id;
+public void Customer(String firstName2, String surname2) {
+		// TODO Auto-generated constructor stub
 	}
 
-	public void setId(Long id) {
+	//Getters and Setters
+
+	public void setId(Double id) {
 		this.id = id;
 	}
 
@@ -40,12 +41,12 @@ public class Customer {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-
+//String toString
 	@Override
 	public String toString() {
 		return "id:" + id + " first name:" + firstName + " surname:" + surname;
 	}
-
+//hashCode
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,7 +65,7 @@ public class Customer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
+		Customer1 other = (Customer1) obj;
 		if (getFirstName() == null) {
 			if (other.getFirstName() != null)
 				return false;
@@ -81,6 +82,11 @@ public class Customer {
 		} else if (!surname.equals(other.surname))
 			return false;
 		return true;
+	}
+
+	public Object getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

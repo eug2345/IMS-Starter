@@ -1,147 +1,91 @@
 package com.qa.ims.persistence.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+import com.qa.ims.controller.CrudController;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
+import com.qa.ims.utils.Utils;
 
-public abstract class ItemDAO implements Dao<Item> {
+/**
+ * Takes in customer details for CRUD functionality
+ *
+ */
+public abstract class ItemDAO implements CrudController<Item> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	@Override
-	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("item_id");
-		resultSet.getString("item_name");
-		resultSet.getDouble("item_price");
-		double item_price = 29.5;
-		java.lang.String item_Name = null;
-		return new Item(id, item_Name, item_price);
+	private static final Item order = null;
+
+	private Utils utils;
+
+	public ItemDAO(@SuppressWarnings("rawtypes") CustomerDAO itemDAO, Utils utils) {
+		super();
+		this.utils = utils;
 	}
+
 
 	/**
-	 * Reads all customers from the database
-	 * @return 
-	 * @return 
-	 * 
-	 * @return A list of customers
+	 * Reads all customers to the logger
+	 * @param orders 
 	 */
-	@Override
-	public List<Item> readAll() {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM ITEM");) {
-			List<Item> items = new ArrayList<>();
-			while (resultSet.next()) {
-				items.add(modelFromResultSet(resultSet));
-			}
-			return items;
-		} catch (SQLException e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return new ArrayList<>();
-	}
-
-	public Item readLatest() {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
-			resultSet.next();
-			return modelFromResultSet(resultSet);
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
-
-	/**
-	 * Creates a customer in the database
-	 * 
-	 * @param customer - takes in a customer object. id will be ignored
-	 */
-	public Item create(Item item) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO item(item_name, item_id) VALUES (?, ?)");) {
-			statement.setNString(1, item.getItemtName());
-			statement.setDouble(2, item.getItemPrice());
-			statement.executeUpdate();
-			return readLatest();
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
-
-	@Override
-	public Item read(Long id) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE id = ?");) {
-			statement.setLong(1, id);
-			try (ResultSet resultSet = statement.executeQuery();) {
-				resultSet.next();
-				return modelFromResultSet(resultSet);
-			}
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
-
-	/**
-	 * Updates a customer in the database
-	 * @param <customer>
-	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
-	 */
-		public <item> Item update1(Item item) {
 	
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("UPDATE item SET item_name = ?, item_price = ? WHERE id = ?");) {
-			statement.setString(1, item.getItemtName());
-			statement.setDouble(2, item.getItemPrice());
-			statement.setLong(3, item.getId());
-			statement.executeUpdate();
-			return read(item.getId());
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
+	public List<Order> readAll(List<Order> orders) {
+			for (Order order : orders) {
+			LOGGER.info(order);
 		}
-		return item;
+		return orders;
 	}
 
 	/**
-	 * Deletes a customer in the database
+	 * Creates a customer by taking in user input
+	 */
+
+	public Item create() {
+		LOGGER.info("Please enter your Item ID");
+		Long itemrID = utils.getLong();
+		Item newItem = Item.create(new Item(itemrID, null));
+		System.out.println(newItem);
+		LOGGER.info("Order initialised");
+		
+		return newItem;
+	}
+
+	/**
+	 * Updates an existing customer by taking in user input
+	 */
+	public Item update() {
+		LOGGER.info("Please enter the id of the order you would like to update");
+		utils.getLong();
+		LOGGER.info("Please enter id of the item you would like to update");
+		utils.getLong();
+		LOGGER.info("Please enter item name");
+		LOGGER.info("Order Updated");
+		
+		return order;
+	}
+
+
+	/**
+	 * Deletes an existing customer by the id of the customer
 	 * 
-	 * @param id - id of the customer
+	 * @return
 	 */
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
-			statement.setLong(1, id);
-			return statement.executeUpdate();
+				Statement statement = connection.createStatement();) {
+			return statement.executeUpdate("delete from Item where id = " + id);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
 	}
-
 }

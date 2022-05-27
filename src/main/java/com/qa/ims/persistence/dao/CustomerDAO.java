@@ -11,34 +11,37 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Customer1;
 import com.qa.ims.utils.DBUtils;
 
-public abstract class CustomerDAO<DAO> implements Dao<Customer> {
+public abstract class CustomerDAO<DAO, executeQuery> implements Dao<Customer1> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	@Override
-	public Customer modelFromResultSet(ResultSet resultSet) throws SQLException {
+	public Customer1 modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		String firstName = resultSet.getString("first_name");
 		String surname = resultSet.getString("surname");
-		return new Customer(id, firstName, surname);
+		return new Customer1(id, firstName, surname);
 	}
 
 	/**
 	 * Reads all customers from the database
+	 * @param <executeQuery>
 	 * 
 	 * @return A list of customers
 	 */
 	
-	public  CustomerDAO() {
+	@SuppressWarnings("hiding")
+	public  <executeQuery> CustomerDAO() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customer");) {
-			List<Customer> customer = new ArrayList<>();
+			List<Customer1> customer = new ArrayList<>();
 			while (resultSet.next()) {
 				customer.add(modelFromResultSet(resultSet));
+				
 			}
 			return;
 		} catch (SQLException e) {
@@ -48,7 +51,7 @@ public abstract class CustomerDAO<DAO> implements Dao<Customer> {
 		return;
 	}
 
-	public Customer readLatest() {
+	public Customer1 readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
@@ -82,7 +85,7 @@ public abstract class CustomerDAO<DAO> implements Dao<Customer> {
 	}
 
 	@Override
-	public Customer read(Long id) {
+	public Customer1 read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE id = ?");) {
 			statement.setLong(1, id);
@@ -101,25 +104,25 @@ public abstract class CustomerDAO<DAO> implements Dao<Customer> {
 	 * Updates a customer in the database
 	 * @param <customer>
 	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
+	 * @param customer - takes in a customer1 object, the id field will be used to
+	 *                 update that customer1 in the database
 	 * @return
 	 */
-		public <customer> Customer update1(Customer customer) {
+		public <customer> Customer1 update1(Customer1 customer1) {
 	
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
-			statement.setString(1, customer.getFirstName());
-			statement.setString(2, customer.getSurname());
-			statement.setLong(3, customer.getId());
+			statement.setString(1, customer1.getFirstName());
+			statement.setString(2, customer1.getSurname());
+			statement.setLong(3, (long) customer1.getId());
 			statement.executeUpdate();
-			return read(customer.getId());
+			return read((Long) customer1.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
-		return customer;
+		return customer1;
 	}
 
 	/**
@@ -130,14 +133,23 @@ public abstract class CustomerDAO<DAO> implements Dao<Customer> {
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM customers WHERE id = ?");) {
-			statement.setLong(1, id);
-			return statement.executeUpdate();
+				Statement statement = connection.createStatement();) {
+			return statement.executeUpdate("delete from customers where id = " + id);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
+	}
+
+	public Customer1 update11(Customer1 customer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Customer1 update(Customer1 customer) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 	

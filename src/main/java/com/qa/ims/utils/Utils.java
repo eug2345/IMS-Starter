@@ -52,4 +52,24 @@ public class Utils {
 		return doubleInput;
 	}
 
-}
+	public static void imsSystem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+		
+	}
+
+	
+		
+	
+
+	
+		
+	
+
+	
+	
+
+

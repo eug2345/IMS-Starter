@@ -89,7 +89,7 @@ public class CustomerPersistence {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
+		Customer1 other = (Customer1) obj;
 		if (getFirstName() == null) {
 			if (other.getFirstName() != null)
 				return false;

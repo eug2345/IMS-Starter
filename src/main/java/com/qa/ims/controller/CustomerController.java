@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 import com.qa.ims.persistence.dao.CustomerDAO;
-import com.qa.ims.persistence.dao.Dao;
 import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.Utils;
@@ -19,17 +19,13 @@ public class CustomerController implements CrudController<Customer> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private CustomerDAO<?> customerController;
+	private CustomerDAO customerDAO;
 	private Utils utils;
 
-	public CustomerController(@SuppressWarnings("rawtypes") CustomerDAO customerDAO, Utils utils) {
+	public CustomerController(CustomerDAO customerDAO, Utils utils) {
 		super();
-		this.customerController = customerDAO;
+		this.customerDAO = customerDAO;
 		this.utils = utils;
-	}
-
-	public CustomerController(Customer custDAO, Utils utils2) {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -37,9 +33,9 @@ public class CustomerController implements CrudController<Customer> {
 	 */
 	@Override
 	public List<Customer> readAll() {
-		List<Customer> customers = customerController.readAll(); 
+		List<Customer> customers = customerDAO.readAll();
 		for (Customer customer : customers) {
-			LOGGER.info(customer);
+			LOGGER.info(customer.toString());
 		}
 		return customers;
 	}
@@ -53,9 +49,7 @@ public class CustomerController implements CrudController<Customer> {
 		String firstName = utils.getString();
 		LOGGER.info("Please enter a surname");
 		String surname = utils.getString();
-		Dao<Customer> customerController = null;
-		@SuppressWarnings("null")
-		Customer customer = customerController.create(new Customer(0, firstName, surname));
+		Customer customer = customerDAO.create(new Customer(firstName, surname));
 		LOGGER.info("Customer created");
 		return customer;
 	}
@@ -64,16 +58,15 @@ public class CustomerController implements CrudController<Customer> {
 	 * Updates an existing customer by taking in user input
 	 */
 	@Override
-	public Item update() {
+	public Customer update() {
 		LOGGER.info("Please enter the id of the customer you would like to update");
-		utils.getLong();
+		Long id = utils.getLong();
 		LOGGER.info("Please enter a first name");
-		utils.getString();
+		String firstName = utils.getString();
 		LOGGER.info("Please enter a surname");
-		utils.getString();
-		Item customer = new Item(null, 0);
+		String surname = utils.getString();
+		Customer customer = customerDAO.update(new Customer(id, firstName, surname));
 		LOGGER.info("Customer Updated");
-		
 		return customer;
 	}
 
@@ -86,7 +79,55 @@ public class CustomerController implements CrudController<Customer> {
 	public int delete() {
 		LOGGER.info("Please enter the id of the customer you would like to delete");
 		Long id = utils.getLong();
-		return customerController.delete(id);
+		return customerDAO.delete(id);
+	}
+
+	@Override
+	public Item create(Object itemPrice) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Item create(Object itemPrice, Class<Double> itemName, String itemID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Item update(Class<Double> itemPrice) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Order create() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Item update() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int delete(long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Double id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Order> readAll(List<Order> orders) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

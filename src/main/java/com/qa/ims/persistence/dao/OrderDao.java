@@ -1,5 +1,7 @@
 package com.qa.ims.persistence.dao;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+
 public class OrderDao {
 	
 	private Long id; 
@@ -84,6 +86,11 @@ public class OrderDao {
 			return false;
 		return true;
 	}
-	
-	
+
+	public static Order create(OrderDao orderDao) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+		
 }

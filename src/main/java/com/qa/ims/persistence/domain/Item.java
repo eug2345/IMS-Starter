@@ -1,12 +1,12 @@
 package com.qa.ims.persistence.domain;
 
 public class Item {
-	
+	//field
 	private Long id;
 	private String itemtName;
 	private double itemPrice;
 	
-	public Item(Item item, double itemPrice) {
+	public Item(double itemPrice, Item item) {
 		
 		super();
 		this.itemtName = "item";
@@ -18,9 +18,7 @@ public class Item {
 		this.itemtName = item_Name;
 		this.itemPrice = string;
 	}
-	public Item(long l, String string, String string2) {
-		// TODO Auto-generated constructor stub
-	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -78,8 +76,22 @@ public class Item {
 		return true;
 	
 	}
+	public static Item create11(Item item) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static Item create111(Item item) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static Item create(Item item) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	}
+	
+	
 	
 	
 	

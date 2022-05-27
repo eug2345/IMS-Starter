@@ -13,7 +13,7 @@ public class CustomerTest {
 
 	@Test
 	public void testEquals() {
-		EqualsVerifier.simple().forClass(Customer.class).verify();
+		EqualsVerifier.simple().forClass(Customer1.class).verify();
 	}
 
 }
